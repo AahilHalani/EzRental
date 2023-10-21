@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EzRental.Data;
 using EzRental.Models;
 using NuGet.Protocol;
+using Newtonsoft.Json;
 
 namespace EzRental.Controllers
 {
@@ -22,11 +23,10 @@ namespace EzRental.Controllers
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: /users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllUser()
         {
-          Console.WriteLine("Get Hit");
           if (_context.User == null)
           {
               return NotFound();
@@ -92,12 +92,12 @@ namespace EzRental.Controllers
         {
           if (_context.User == null)
           {
-              return Problem("Entity set 'EzRentalDbContext.User'  is null.");
+              return Problem("Server ran into an unexpected error.");
           }
             _context.User.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return CreatedAtAction("GetUser", new { id = user.UserId });
         }
 
         // DELETE: api/Users/5

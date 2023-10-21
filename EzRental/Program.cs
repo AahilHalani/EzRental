@@ -20,6 +20,11 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
         }));
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,8 +33,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 
+app.UseSession();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCookiePolicy();
+
 
 
 app.MapControllerRoute(

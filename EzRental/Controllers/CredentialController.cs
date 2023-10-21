@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EzRental.Data;
 using EzRental.Models;
+using System.Security;
+using EzRental.Services;
+using Newtonsoft.Json;
 
 namespace EzRental.Controllers
 {
@@ -15,40 +18,14 @@ namespace EzRental.Controllers
     public class CredentialController : ControllerBase
     {
         private readonly EzRentalDbContext _context;
+        private readonly PasswordHasher _passwordHashser;
 
         public CredentialController(EzRentalDbContext context)
         {
             _context = context;
+            _passwordHashser = new PasswordHasher();
         }
 
-        // GET: api/Credential
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Credentials>>> GetCredentials()
-        {
-          if (_context.Credentials == null)
-          {
-              return NotFound();
-          }
-            return await _context.Credentials.ToListAsync();
-        }
-
-        // GET: api/Credential/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Credentials>> GetCredentials(int id)
-        {
-          if (_context.Credentials == null)
-          {
-              return NotFound();
-          }
-            var credentials = await _context.Credentials.FindAsync(id);
-
-            if (credentials == null)
-            {
-                return NotFound();
-            }
-
-            return credentials;
-        }
 
         // PUT: api/Credential/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -81,20 +58,6 @@ namespace EzRental.Controllers
             return NoContent();
         }
 
-        // POST: api/Credential
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Credentials>> PostCredentials(Credentials credentials)
-        {
-          if (_context.Credentials == null)
-          {
-              return Problem("Entity set 'EzRentalDbContext.Credentials'  is null.");
-          }
-            _context.Credentials.Add(credentials);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCredentials", new { id = credentials.CredentialId }, credentials);
-        }
 
         // DELETE: api/Credential/5
         [HttpDelete("{id}")]

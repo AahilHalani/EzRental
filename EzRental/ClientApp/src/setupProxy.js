@@ -15,7 +15,8 @@ const context =  [
     "/country",
     "/facility",
     "/rent",
-    "/credential"
+    "/credential",
+    "/session"
 
 ];
 
