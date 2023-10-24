@@ -29,7 +29,7 @@ namespace EzRental.Controllers
           {
               return NotFound();
           }
-            return await _context.Advertisement.ToListAsync();
+            return await _context.Advertisement.Include(a => a.Rent).Include(r => r.Rent.Room).ToListAsync();
         }
 
         // GET: api/Advertisement/5
@@ -40,14 +40,15 @@ namespace EzRental.Controllers
           {
               return NotFound();
           }
-            var advertisement = await _context.Advertisement.FindAsync(id);
+          
+          var advertisement = await _context.Advertisement.Include(a => a.Rent).Include(r => r.Rent.Room).FirstAsync(a => a.AdId == id);
 
-            if (advertisement == null)
-            {
-                return NotFound();
-            }
+          if (advertisement == null)
+          {
+            return NotFound();
+          }
 
-            return advertisement;
+          return Ok(advertisement);
         }
 
         // PUT: api/Advertisement/5
@@ -66,6 +67,7 @@ namespace EzRental.Controllers
             {
                 await _context.SaveChangesAsync();
             }
+
             catch (DbUpdateConcurrencyException)
             {
                 if (!AdvertisementExists(id))
@@ -104,16 +106,32 @@ namespace EzRental.Controllers
             {
                 return NotFound();
             }
-            var advertisement = await _context.Advertisement.FindAsync(id);
+
+            // get advertisement data
+            var advertisement = await _context.Advertisement.Include(a => a.Rent).Include(r => r.Rent.Room).FirstAsync(a => a.AdId == id);
+            
             if (advertisement == null)
             {
                 return NotFound();
             }
 
+            //Get all facilites linked to add
+            var facilities = await _context.AdFacility.Where(ad => ad.AdId == id).ToListAsync();
+            
+            //Remove all ad facilities
+            foreach(var facility in facilities) 
+            {   
+                if(facility != null)
+                    _context.AdFacility.Remove(facility);
+            }
+
             _context.Advertisement.Remove(advertisement);
+            _context.Rent.Remove(advertisement.Rent);
+            _context.Room.Remove(advertisement.Rent.Room);
+
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool AdvertisementExists(int id)

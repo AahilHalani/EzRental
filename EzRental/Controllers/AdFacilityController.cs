@@ -21,33 +21,36 @@ namespace EzRental.Controllers
             _context = context;
         }
 
-        // GET: api/AdFacility
+        /*// GET: api/AdFacility
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdFacility>>> GetAdFacility()
+        public ActionResult<IEnumerable<AdFacility>> GetAdFacility()
         {
           if (_context.AdFacility == null)
           {
               return NotFound();
           }
-            return await _context.AdFacility.ToListAsync();
-        }
+            return _context.AdFacility.Include(ad => ad.Facility).Include(ad => ad.Ad).ToList();
+        }*/
+
 
         // GET: api/AdFacility/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AdFacility>> GetAdFacility(int id)
+        // get all facilites belonging to the add id
+        [HttpGet("{adId}")]
+        public ActionResult<AdFacility> GetAdFacility(int adId)
         {
-          if (_context.AdFacility == null)
-          {
-              return NotFound();
-          }
-            var adFacility = await _context.AdFacility.FindAsync(id);
-
-            if (adFacility == null)
+            Console.WriteLine(adId);
+            if (_context.AdFacility == null)
+            {
+                return NotFound();
+            }
+            var adFacility = _context.AdFacility.Include(af => af.Facility).Where(af => af.AdId == adId).ToList();
+            
+            if (adFacility.Count <= 0)
             {
                 return NotFound();
             }
 
-            return adFacility;
+            return Ok(adFacility);
         }
 
         // PUT: api/AdFacility/5
@@ -81,8 +84,6 @@ namespace EzRental.Controllers
             return NoContent();
         }
 
-        // POST: api/AdFacility
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<AdFacility>> PostAdFacility(AdFacility adFacility)
         {

@@ -11,6 +11,7 @@ namespace EzRental.Models
         [Required]
         [Column("RentId", TypeName = "int")]
         public int RentId { get; set; }
+        public Rent Rent { get; set; }
 
         [Required]
         [Column("Price", TypeName = "decimal")]

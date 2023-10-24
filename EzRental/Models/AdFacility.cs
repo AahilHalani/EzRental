@@ -11,9 +11,11 @@ namespace EzRental.Models
         [Required]
         [Column("FacilityId", TypeName = "int")]
         public int FacilityId { get; set; }
+        public Facilties? Facility { get; set; }
 
         [Required]
         [Column("AdId", TypeName = "int")]
         public int AdId { get; set; }
+        public Advertisement? Ad { get; set; }
     }
 }

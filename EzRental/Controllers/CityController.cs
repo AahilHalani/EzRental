@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EzRental.Data;
 using EzRental.Models;
+using NuGet.Versioning;
 
 namespace EzRental.Controllers
 {
@@ -23,31 +24,36 @@ namespace EzRental.Controllers
 
         // GET: api/City
         [HttpGet]
+
         public async Task<ActionResult<IEnumerable<City>>> GetCity()
         {
-          if (_context.City == null)
-          {
-              return NotFound();
-          }
-            return await _context.City.ToListAsync();
+            if (_context.City == null)
+            {
+                return NotFound();
+            }
+
+            var cities = await _context.City.Include(c => c.Country).ToListAsync();
+            
+            return Ok(cities); 
         }
 
         // GET: api/City/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<City>> GetCity(int id)
+        public ActionResult<City> GetCity(int id)
         {
           if (_context.City == null)
           {
               return NotFound();
           }
-            var city = await _context.City.FindAsync(id);
+            
+            var city =  _context.City.Include(c => c.Country).FirstOrDefault(c => c.CityId == id);
 
             if (city == null)
             {
                 return NotFound();
             }
 
-            return city;
+            return Ok(city);
         }
 
         // PUT: api/City/5

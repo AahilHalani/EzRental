@@ -15,5 +15,6 @@ namespace EzRental.Models
         [Required]
         [Column("CountryId", TypeName = "int")]
         public int CountryId { get; set; }
+        public Country? Country { get; set; }   //Navigational Property
     }
 }

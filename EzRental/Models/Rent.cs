@@ -11,6 +11,7 @@ namespace EzRental.Models
         [Required]
         [Column("RoomId", TypeName = "int")]
         public int RoomId { get; set; }
+        public Room Room { get; set; } //Navigational Property
 
         [Required]
         [Column("RenterId", TypeName = "int")]
