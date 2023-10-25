@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using EzRental.Services;
 using Microsoft.AspNetCore.Http;
+using MySqlX.XDevAPI;
+using System.Web;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -43,7 +45,12 @@ namespace EzRental.Controllers
 
                 if (_passwordHashser.Verify(user_credentials.Password, credentials.Password, user_credentials.Salt))
                 {
-                    HttpContext.Session.SetString("SessionUser", user_credentials.Username);
+                    HttpContext.Response.Cookies.Append("user", user_credentials.Username,
+                        new Microsoft.AspNetCore.Http.CookieOptions
+                        {
+                            Expires = DateTime.Now.AddHours(1)
+                        });
+                    
                     return Ok("login Succesful");
                 }
 
@@ -57,24 +64,37 @@ namespace EzRental.Controllers
             }
         }
 
-
         // POST: credential - user signup
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         // adds user credentials to the database
         [HttpPost]
-        public async Task<ActionResult> Signup(Credentials credentials)
+        public async Task<ActionResult> Signup(CredentialWrapper credentialUserData)
         {
             try
             {
+                Credentials credentials = (credentialUserData.credentials != null) ? 
+                    credentialUserData.credentials : throw new ArgumentNullException();
+
+                User user = (credentialUserData.user != null) ?
+                    credentialUserData.user : throw new ArgumentNullException();
+
                 var hashCredentials = _passwordHashser.Hash(credentials.Password);
 
                 credentials.Password = hashCredentials[0];
                 credentials.Salt = hashCredentials[1];
 
+                _context.User.Add(user);
+                await _context.SaveChangesAsync();
+
+                credentials.UserId = user.UserId;
                 _context.Credentials.Add(credentials);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetCredentials", new { id = credentials.CredentialId });
+                return CreatedAtAction("Login", new { user = credentials.Username });
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine(e.ToString());
+                return Problem("Server ran into an unexpected problem");
             }
             catch
             {
@@ -85,11 +105,7 @@ namespace EzRental.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
-            if (HttpContext.Session.GetString("SessionUser") != null)
-            {
-                HttpContext.Session.Remove("SessionUser");
-            }
-
+            Response.Cookies.Delete("user");
             return Ok("User Logged Out");
         }
 
