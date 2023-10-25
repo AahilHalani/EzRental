@@ -23,13 +23,17 @@ namespace EzRental.Controllers
 
         // GET: api/Advertisement
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Advertisement>>> GetAdvertisement()
+        public async Task<ActionResult<IEnumerable<Advertisement>>> GetAllAdvertisement()
         {
-          if (_context.Advertisement == null)
-          {
-              return NotFound();
-          }
-            return await _context.Advertisement.Include(a => a.Rent).Include(r => r.Rent.Room).ToListAsync();
+            if(_context.Advertisement == null)
+            {
+                return Problem("Server ran into an unexpected error");
+            }
+
+            var advertisements = await _context.Advertisement.Include(ad => ad.Area).
+                Include(ad => ad.Area.city).Include(ad => ad.Area.city.Country).ToListAsync();
+
+            if (advertisements.Count > 0) { return Ok(advertisements); } else return NotFound(); 
         }
 
         // GET: api/Advertisement/5
@@ -40,15 +44,30 @@ namespace EzRental.Controllers
           {
               return NotFound();
           }
-          
-          var advertisement = await _context.Advertisement.Include(a => a.Rent).Include(r => r.Rent.Room).FirstAsync(a => a.AdId == id);
 
-          if (advertisement == null)
-          {
-            return NotFound();
-          }
+            var advertisement = await _context.Advertisement.Include(ad => ad.Rent).Include(ad => ad.Rent.Room).
+                Include(ad => ad.Rent.Renter).Include(ad => ad.Area).
+                  Include(ad => ad.Area.city).Include(ad => ad.Area.city.Country).FirstAsync(ad => ad.AdId == id);
 
-          return Ok(advertisement);
+            if(advertisement == null)
+            {
+                return NotFound();
+            }
+
+            AdvertisementWrapper advertisementWrapper = new AdvertisementWrapper();
+            advertisementWrapper.advertisement = advertisement;
+            advertisementWrapper.facilties = new List<Facilties>();
+
+            var facilities = _context.AdFacility.Include(af => af.Facility).Where(af => af.AdId == id).ToList();
+
+            if(facilities != null)
+                foreach(var facility in facilities)
+                {   
+                    if(facility.Facility != null)
+                        advertisementWrapper.facilties.Add(facility.Facility);
+                }
+
+            return Ok(advertisementWrapper);
         }
 
         // PUT: api/Advertisement/5

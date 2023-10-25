@@ -28,5 +28,10 @@ namespace EzRental.Models
         [Required]
         [Column("EndDate", TypeName = "date")]
         public DateTime EndDate { get; set; }
+
+        [Required]
+        [Column("AreaId", TypeName = "int")]
+        public int AreaId { get; set; }
+        public Area Area { get; set; }
     }
 }
