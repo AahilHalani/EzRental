@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Org.BouncyCastle.Asn1.Mozilla;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EzRental.Models
@@ -15,5 +16,6 @@ namespace EzRental.Models
         [Required]
         [Column("CityId", TypeName = "int")]
         public int CityId { get; set; }
+        public City? city { get; set; }
     }
 }

@@ -16,5 +16,7 @@ namespace EzRental.Models
         [Required]
         [Column("RenterId", TypeName = "int")]
         public int RenterId { get; set; }
+
+        public User Renter { get; set; }
     }
 }
