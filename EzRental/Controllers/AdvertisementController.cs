@@ -30,8 +30,8 @@ namespace EzRental.Controllers
                 return Problem("Server ran into an unexpected error");
             }
 
-            var advertisements = await _context.Advertisement.Include(ad => ad.Area).
-                Include(ad => ad.Area.city).Include(ad => ad.Area.city.Country).ToListAsync();
+            var advertisements = await _context.Advertisement.Include(ad => ad.Area).ToListAsync();
+                //Include(ad => ad.Area.city).Include(ad => ad.Area.city.Country).ToListAsync();
 
             if (advertisements.Count > 0) { return Ok(advertisements); } else return NotFound(); 
         }
@@ -73,48 +73,115 @@ namespace EzRental.Controllers
         // PUT: api/Advertisement/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdvertisement(int id, Advertisement advertisement)
+        public async Task<IActionResult> PutAdvertisement(int id, AdvertisementWrapper advertisementWrapper)
         {
-            if (id != advertisement.AdId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(advertisement).State = EntityState.Modified;
-
             try
             {
+                Advertisement advertisement = advertisementWrapper.advertisement;
+                List<Facilties> facilities = advertisementWrapper.facilties;
+
+
+                if (id != advertisement.AdId)
+                {
+                    return BadRequest();
+                }
+
+                _context.Entry(advertisement.Rent.Room).State = EntityState.Modified;
+                _context.Entry(advertisement).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AdvertisementExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                var existing_facilities = _context.AdFacility.Where(ad => ad.AdId == id).Select(ad => ad.FacilityId).ToListAsync();
+
+                List<int> facility_ids = new List<int>();
+                foreach(var facility in facilities)
+                {
+                    facility_ids.Add(facility.FacilityId);
+                }
+                
+                // add new facilities
+                foreach(var facility in facilities) 
+                {
+                    if (!existing_facilities.Result.Contains(facility.FacilityId))
+                    {
+                        Console.WriteLine("New Facility");
+                        _context.AdFacility.Add(new AdFacility { FacilityId = facility.FacilityId, AdId = id });
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Same facility {facility.FacilityId} detected");
+                    }
+                }
+
+                // remove facilities
+                foreach (var facility in existing_facilities.Result)
+                {
+                    if (!facility_ids.Contains(facility))
+                    {
+                        Console.WriteLine($"Remove Facility {facility}");
+                        AdFacility adfacility = await _context.AdFacility.FirstOrDefaultAsync(af => af.FacilityId == facility && af.AdId == id);
+                        _context.AdFacility.Remove(adfacility);
+                    }
+                }
+
+
                 await _context.SaveChangesAsync();
-            }
 
-            catch (DbUpdateConcurrencyException)
+
+                return NoContent();
+            }
+            catch(Exception e) 
             {
-                if (!AdvertisementExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                Console.WriteLine(e.ToString());
+                return Problem("Server ran into an error");
             }
-
-            return NoContent();
         }
 
         // POST: api/Advertisement
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Advertisement>> PostAdvertisement(Advertisement advertisement)
+        public async Task<ActionResult<Advertisement>> PostAdvertisement(AdvertisementWrapper advertisementWrapper)
         {
           if (_context.Advertisement == null)
           {
-              return Problem("Entity set 'EzRentalDbContext.Advertisement'  is null.");
+              return Problem("Server ran into an unexpected error.");
           }
-            _context.Advertisement.Add(advertisement);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdvertisement", new { id = advertisement.AdId }, advertisement);
+            try
+            {
+                Advertisement advertisement = advertisementWrapper.advertisement;
+                List<Facilties> facilities = advertisementWrapper.facilties;
+
+                _context.Room.Add(advertisement.Rent.Room);
+                _context.Rent.Add(advertisement.Rent);
+                _context.Advertisement.Add(advertisement);
+
+                foreach(var facility in facilities)
+                {
+                    _context.AdFacility.Add(new AdFacility { FacilityId = facility.FacilityId,AdId=advertisement.AdId });
+                }
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetAdvertisement", new { id = advertisement.AdId });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return Problem("Server ran into an unexpected error.");
+            }
         }
 
         // DELETE: api/Advertisement/5

@@ -32,6 +32,6 @@ namespace EzRental.Models
         [Required]
         [Column("AreaId", TypeName = "int")]
         public int AreaId { get; set; }
-        public Area Area { get; set; }
+        public Area? Area { get; set; }
     }
 }
