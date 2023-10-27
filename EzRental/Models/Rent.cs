@@ -11,12 +11,12 @@ namespace EzRental.Models
         [Required]
         [Column("RoomId", TypeName = "int")]
         public int RoomId { get; set; }
-        public Room Room { get; set; } //Navigational Property
+        public Room? Room { get; set; } //Navigational Property
 
         [Required]
         [Column("RenterId", TypeName = "int")]
         public int RenterId { get; set; }
 
-        public User Renter { get; set; }
+        public User? Renter { get; set; }
     }
 }

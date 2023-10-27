@@ -11,7 +11,7 @@ namespace EzRental.Models
         [Required]
         [Column("RentId", TypeName = "int")]
         public int RentId { get; set; }
-        public Rent Rent { get; set; }
+        public Rent? Rent { get; set; }
 
         [Required]
         [Column("Price", TypeName = "decimal")]
@@ -19,7 +19,7 @@ namespace EzRental.Models
 
         [Required]
         [Column("Description", TypeName = "nvarchar(200)")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [Column("StartDate", TypeName = "date")]

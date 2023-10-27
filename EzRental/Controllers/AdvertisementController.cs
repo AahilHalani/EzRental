@@ -71,7 +71,6 @@ namespace EzRental.Controllers
         }
 
         // PUT: api/Advertisement/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAdvertisement(int id, AdvertisementWrapper advertisementWrapper)
         {
@@ -151,29 +150,42 @@ namespace EzRental.Controllers
             }
         }
 
-        // POST: api/Advertisement
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: /advertisement
         [HttpPost]
         public async Task<ActionResult<Advertisement>> PostAdvertisement(AdvertisementWrapper advertisementWrapper)
         {
-          if (_context.Advertisement == null)
-          {
-              return Problem("Server ran into an unexpected error.");
-          }
+            if (_context.Advertisement == null)
+            {
+                return Problem("Server ran into an unexpected error.");
+            }
 
             try
             {
+                if (advertisementWrapper.advertisement == null || advertisementWrapper.facilties == null)
+                    return Problem("Server ran into an error: Null Arguments are passed");
+
                 Advertisement advertisement = advertisementWrapper.advertisement;
                 List<Facilties> facilities = advertisementWrapper.facilties;
 
                 _context.Room.Add(advertisement.Rent.Room);
+                _context.SaveChanges();
+
+                advertisement.Rent.RoomId = advertisement.Rent.Room.RoomId;
+                advertisement.Rent.Renter = null;
                 _context.Rent.Add(advertisement.Rent);
+                _context.SaveChanges();
+                
+                advertisement.RentId = advertisement.Rent.RentId;
+                advertisement.Rent = null;
+                advertisement.Area = null;
                 _context.Advertisement.Add(advertisement);
+                _context.SaveChanges();
 
                 foreach(var facility in facilities)
                 {
                     _context.AdFacility.Add(new AdFacility { FacilityId = facility.FacilityId,AdId=advertisement.AdId });
                 }
+
                 await _context.SaveChangesAsync();
                 return CreatedAtAction("GetAdvertisement", new { id = advertisement.AdId });
             }
