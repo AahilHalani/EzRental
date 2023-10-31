@@ -22,19 +22,34 @@ export default function SignupView()
     }
 
     const formData = {
-      userName: userName,
+     /* userName: userName,
       firstName: "Umair",
       lastName: "Amir",
       phoneNumber: "03323623930",
       address:"Your Mom",
       password: password,
-      email: email
+      email: email*/
+
+        "credentials": {
+            "username": userName,
+            "password": password
+        },
+
+        "user": {
+            "firstName": "Umair",
+            "lastName": "Bawlin",
+            "Address": "Your MOM",
+            "phoneNumber": "002111",
+            "email": email
+        }
+      
     }
 
     try
     {
       console.log(formData)
-      const response = await axios.post('http://localhost:44486/session/signup', formData)
+        const response = await axios.post('http://localhost:44486/session/signup', formData)
+        console.log(response.data)
       alert(response.data.message)
     }
     catch(error)
