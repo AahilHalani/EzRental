@@ -7,6 +7,7 @@ using EzRental.Services;
 using Microsoft.AspNetCore.Http;
 using MySqlX.XDevAPI;
 using System.Web;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,8 +27,8 @@ namespace EzRental.Controllers
         }
 
 
-        // GET: api/<ValuesController>
-        [HttpGet]
+        // POST: api/<ValuesController>
+        [HttpPost]
         public ActionResult Login(Credentials credentials)
         {
             Console.WriteLine("login Hit");
@@ -51,7 +52,7 @@ namespace EzRental.Controllers
                             Expires = DateTime.Now.AddHours(1)
                         });
                     
-                    return Ok("login Succesful");
+                    return Ok(new {User = credentials.Username, message = "Login Successful"});
                 }
 
                 else
@@ -69,6 +70,7 @@ namespace EzRental.Controllers
         [HttpPost]
         public async Task<ActionResult> Signup(CredentialWrapper credentialUserData)
         {
+            Console.WriteLine("login Hit");
             try
             {
                 Credentials credentials = (credentialUserData.credentials != null) ? 
