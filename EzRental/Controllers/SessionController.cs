@@ -48,9 +48,20 @@ namespace EzRental.Controllers
                     HttpContext.Response.Cookies.Append("user", user_credentials.Username,
                         new Microsoft.AspNetCore.Http.CookieOptions
                         {
-                            Expires = DateTime.Now.AddHours(1)
-                        });
-                    
+                            Expires = DateTime.Now.AddHours(1),
+                            Secure = true
+                        }) ;
+
+                    var userId = _context.Credentials.Where(u => u.Username == credentials.Username).
+                        Select(u => u.UserId).FirstAsync().Result;
+
+                    HttpContext.Response.Cookies.Append("userId", userId.ToString(),
+                        new Microsoft.AspNetCore.Http.CookieOptions
+                        {
+                            Expires = DateTime.Now.AddHours(1),
+                            Secure = true
+                        }) ;
+
                     return Ok("login Succesful");
                 }
 
