@@ -30,8 +30,15 @@ namespace EzRental.Models
         public DateTime EndDate { get; set; }
 
         [Required]
-        [Column("AreaId", TypeName = "int")]
-        public int AreaId { get; set; }
-        public Area? Area { get; set; }
+        [Column("Area", TypeName = "varchar(50)")]
+        public string? Area { get; set; }
+
+        [Required]
+        [Column("City", TypeName = "varchar(50)")]
+        public string? City { get; set; }
+
+        [Required]
+        [Column("Country", TypeName = "varchar(50)")]
+        public string? Country { get; set; }
     }
 }

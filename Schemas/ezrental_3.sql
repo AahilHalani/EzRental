@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `ezrental` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `ezrental`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ezrental
@@ -57,7 +55,7 @@ CREATE TABLE `adfacility` (
   KEY `fk_FacilityId` (`FacilityId`),
   CONSTRAINT `fk_AdId` FOREIGN KEY (`AdId`) REFERENCES `advertisement` (`AdId`),
   CONSTRAINT `fk_FacilityId` FOREIGN KEY (`FacilityId`) REFERENCES `facilities` (`FacilityId`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +64,7 @@ CREATE TABLE `adfacility` (
 
 LOCK TABLES `adfacility` WRITE;
 /*!40000 ALTER TABLE `adfacility` DISABLE KEYS */;
-INSERT INTO `adfacility` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8),(9,9,9),(10,10,10);
+INSERT INTO `adfacility` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8);
 /*!40000 ALTER TABLE `adfacility` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,9 +82,13 @@ CREATE TABLE `advertisement` (
   `Description` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `StartDate` date NOT NULL,
   `EndDate` date NOT NULL,
-  `AreaId` int NOT NULL,
-  PRIMARY KEY (`AdId`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `Area` varchar(50) NOT NULL DEFAULT 'default_area',
+  `Country` varchar(50) NOT NULL DEFAULT 'default_country',
+  `City` varchar(50) NOT NULL DEFAULT 'default_city',
+  PRIMARY KEY (`AdId`),
+  KEY `fk_rent_advertisement` (`RentId`),
+  CONSTRAINT `fk_rent_advertisement` FOREIGN KEY (`RentId`) REFERENCES `rent` (`RentId`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +97,7 @@ CREATE TABLE `advertisement` (
 
 LOCK TABLES `advertisement` WRITE;
 /*!40000 ALTER TABLE `advertisement` DISABLE KEYS */;
-INSERT INTO `advertisement` VALUES (1,1,65.39,'Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci.','2020-08-28','2023-06-07',1),(2,2,288.68,'Vivamus vestibulum sagittis sapien.','2020-04-25','2023-03-23',1),(3,3,262.41,'Curabitur in libero ut massa volutpat convallis.','2020-03-23','2023-10-08',1),(4,4,150.59,'Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.','2020-08-13','2023-06-07',1),(5,5,168.29,'Ut tellus.','2020-01-03','2023-04-20',1),(6,6,56.70,'In est risus, auctor sed, tristique in, tempus sit amet, sem.','2020-10-11','2023-09-16',1),(7,7,159.19,'Morbi non lectus.','2020-06-28','2023-02-03',1),(8,8,79.94,'Proin leo odio, porttitor id, consequat in, consequat ut, nulla.','2020-07-14','2023-08-12',1),(9,9,203.57,'Quisque porta volutpat erat.','2020-11-27','2023-08-28',1),(10,10,170.26,'Aenean fermentum.','2020-11-22','2023-10-22',1),(11,11,223.15,'Etiam pretium iaculis justo.','2020-08-30','2023-12-17',1),(12,12,111.84,'Curabitur gravida nisi at nibh.','2020-12-13','2023-02-07',1),(13,13,163.42,'Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.','2020-01-30','2023-12-12',1),(14,14,177.85,'Sed ante.','2020-09-05','2023-05-26',1),(15,15,100.57,'Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla.','2020-12-08','2023-04-03',1),(16,16,219.36,'Fusce consequat.','2020-11-20','2023-03-02',1),(17,17,58.83,'Integer a nibh.','2020-06-30','2023-03-29',1),(18,18,74.30,'Duis aliquam convallis nunc.','2020-11-16','2023-11-12',1),(19,19,263.50,'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam.','2020-05-25','2023-10-14',1),(20,20,172.11,'Aliquam erat volutpat.','2020-12-30','2023-08-13',1),(21,21,244.65,'Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh.','2020-08-22','2023-07-01',1),(22,22,158.23,'Curabitur gravida nisi at nibh.','2020-05-31','2023-02-15',1),(23,23,145.57,'Donec quis orci eget orci vehicula condimentum.','2020-10-27','2023-07-02',1),(24,24,102.34,'Suspendisse potenti.','2020-05-03','2023-05-23',1),(25,25,273.59,'Maecenas ut massa quis augue luctus tincidunt.','2020-12-24','2023-12-26',1),(26,26,256.71,'Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.','2020-01-13','2023-04-02',1),(27,27,152.66,'Etiam justo.','2020-07-19','2023-09-09',1),(28,28,270.59,'Pellentesque ultrices mattis odio.','2020-03-25','2023-07-13',1),(29,29,98.31,'Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.','2020-09-20','2023-03-30',1),(30,30,288.55,'Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla.','2020-07-10','2023-06-20',1),(31,31,229.51,'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris viverra diam vitae quam.','2020-05-26','2023-07-16',1),(32,32,266.26,'Quisque id justo sit amet sapien dignissim vestibulum.','2020-02-10','2023-02-15',1),(33,33,166.52,'Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo.','2020-04-11','2023-09-22',1),(34,34,90.39,'Vivamus in felis eu sapien cursus vestibulum.','2020-07-10','2023-07-17',1),(35,35,164.24,'Suspendisse ornare consequat lectus.','2020-06-13','2023-08-26',1),(36,36,189.34,'Duis at velit eu est congue elementum.','2020-11-18','2023-04-02',1),(37,37,206.51,'Praesent blandit lacinia erat.','2020-12-02','2023-04-21',1),(38,38,87.42,'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio.','2020-09-24','2023-06-28',1),(39,39,256.39,'Nulla nisl.','2020-12-28','2023-05-05',1),(40,40,169.62,'Maecenas ut massa quis augue luctus tincidunt.','2020-06-01','2023-12-25',1),(41,41,107.46,'Phasellus sit amet erat.','2020-05-25','2023-02-09',1),(42,42,227.76,'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.','2020-03-09','2023-10-05',1),(43,43,266.98,'Duis ac nibh.','2020-08-15','2023-07-30',1),(44,44,54.23,'Donec quis orci eget orci vehicula condimentum.','2020-12-23','2023-08-21',1),(45,45,96.67,'Duis at velit eu est congue elementum.','2020-01-29','2023-04-27',1),(46,46,151.44,'Nunc purus.','2020-09-07','2023-03-21',1),(47,47,194.85,'Suspendisse potenti.','2020-12-13','2023-12-18',1),(48,48,281.90,'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.','2020-09-15','2023-01-28',1),(49,49,116.51,'Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue.','2020-08-23','2023-09-24',1),(50,50,183.01,'Suspendisse potenti.','2020-11-15','2023-01-06',1);
+INSERT INTO `advertisement` VALUES (1,1,65.39,'Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci.','2020-08-28','2023-06-07','default_area','default_country','default_city'),(2,2,288.68,'Vivamus vestibulum sagittis sapien.','2020-04-25','2023-03-23','default_area','default_country','default_city'),(3,3,262.41,'Curabitur in libero ut massa volutpat convallis.','2020-03-23','2023-10-08','default_area','default_country','default_city'),(4,4,150.59,'Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.','2020-08-13','2023-06-07','default_area','default_country','default_city'),(5,5,168.29,'Ut tellus.','2020-01-03','2023-04-20','default_area','default_country','default_city'),(6,6,56.70,'In est risus, auctor sed, tristique in, tempus sit amet, sem.','2020-10-11','2023-09-16','default_area','default_country','default_city'),(7,7,159.19,'Morbi non lectus.','2020-06-28','2023-02-03','default_area','default_country','default_city'),(8,8,79.94,'Proin leo odio, porttitor id, consequat in, consequat ut, nulla.','2020-07-14','2023-08-12','default_area','default_country','default_city');
 /*!40000 ALTER TABLE `advertisement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,7 +274,7 @@ CREATE TABLE `rent` (
   PRIMARY KEY (`RentId`),
   KEY `fk_rent_RoomId` (`RoomId`),
   CONSTRAINT `fk_rent_RoomId` FOREIGN KEY (`RoomId`) REFERENCES `room` (`RoomId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +283,7 @@ CREATE TABLE `rent` (
 
 LOCK TABLES `rent` WRITE;
 /*!40000 ALTER TABLE `rent` DISABLE KEYS */;
-INSERT INTO `rent` VALUES (1,6,7),(2,1,2),(3,4,3),(4,4,1),(5,6,2),(6,3,1),(7,3,8),(8,4,1),(9,7,7),(10,1,4);
+INSERT INTO `rent` VALUES (1,6,7),(2,1,2),(3,4,3),(4,4,1),(5,6,2),(6,3,1),(7,3,8),(8,4,1);
 /*!40000 ALTER TABLE `rent` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -299,7 +301,7 @@ CREATE TABLE `room` (
   `SqArea` decimal(18,2) NOT NULL,
   `PicturePath` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   PRIMARY KEY (`RoomId`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,7 +310,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
-INSERT INTO `room` VALUES (1,'Shared',3,116.60,'http://dummyimage.com/162x223.png/5fa2dd/ffffff'),(2,'Shared',1,182.49,'http://dummyimage.com/183x113.png/dddddd/000000'),(3,'Private',2,224.98,'http://dummyimage.com/242x110.png/5fa2dd/ffffff'),(4,'Private',2,462.08,'http://dummyimage.com/149x191.png/dddddd/000000'),(5,'Shared',3,289.50,'http://dummyimage.com/212x189.png/cc0000/ffffff'),(6,'Private',1,406.69,'http://dummyimage.com/229x151.png/dddddd/000000'),(7,'Private',2,350.63,'http://dummyimage.com/204x217.png/dddddd/000000'),(8,'Shared',2,221.78,'http://dummyimage.com/244x222.png/5fa2dd/ffffff'),(9,'Private',2,201.21,'http://dummyimage.com/132x222.png/5fa2dd/ffffff'),(10,'Shared',1,205.72,'http://dummyimage.com/161x233.png/dddddd/000000'),(11,'Shared',3,473.43,'http://dummyimage.com/201x171.png/5fa2dd/ffffff'),(12,'Private',2,177.88,'http://dummyimage.com/178x108.png/dddddd/000000'),(13,'Private',3,347.48,'http://dummyimage.com/226x124.png/cc0000/ffffff'),(14,'Shared',1,405.06,'http://dummyimage.com/190x236.png/ff4444/ffffff'),(15,'Shared',2,255.57,'http://dummyimage.com/210x184.png/dddddd/000000'),(16,'Private',3,349.34,'http://dummyimage.com/211x229.png/ff4444/ffffff'),(17,'Private',3,497.87,'http://dummyimage.com/145x207.png/dddddd/000000'),(18,'Shared',3,182.39,'http://dummyimage.com/163x225.png/dddddd/000000'),(19,'Shared',1,202.26,'http://dummyimage.com/178x178.png/5fa2dd/ffffff'),(20,'Private',3,165.79,'http://dummyimage.com/199x238.png/ff4444/ffffff'),(21,'Private',3,238.53,'http://dummyimage.com/244x114.png/5fa2dd/ffffff'),(22,'Shared',3,176.80,'http://dummyimage.com/188x215.png/ff4444/ffffff'),(23,'Shared',1,291.15,'http://dummyimage.com/151x248.png/ff4444/ffffff'),(24,'Private',1,476.56,'http://dummyimage.com/144x223.png/cc0000/ffffff'),(25,'Private',3,425.09,'http://dummyimage.com/115x216.png/dddddd/000000'),(26,'Private',3,210.50,'http://dummyimage.com/123x173.png/5fa2dd/ffffff'),(27,'Private',1,459.43,'http://dummyimage.com/214x212.png/dddddd/000000'),(28,'Private',2,445.90,'http://dummyimage.com/241x208.png/ff4444/ffffff'),(29,'Private',2,491.61,'http://dummyimage.com/109x127.png/ff4444/ffffff'),(30,'Private',1,294.58,'http://dummyimage.com/109x183.png/cc0000/ffffff'),(31,'Shared',1,248.50,'http://dummyimage.com/152x183.png/cc0000/ffffff'),(32,'Private',1,456.60,'http://dummyimage.com/196x129.png/dddddd/000000'),(33,'Shared',3,432.45,'http://dummyimage.com/238x221.png/cc0000/ffffff'),(34,'Private',1,116.19,'http://dummyimage.com/161x238.png/ff4444/ffffff'),(35,'Private',1,121.80,'http://dummyimage.com/103x186.png/5fa2dd/ffffff'),(36,'Shared',3,153.78,'http://dummyimage.com/152x107.png/5fa2dd/ffffff'),(37,'Shared',3,351.57,'http://dummyimage.com/222x206.png/dddddd/000000'),(38,'Private',2,450.55,'http://dummyimage.com/117x226.png/dddddd/000000'),(39,'Private',1,335.85,'http://dummyimage.com/161x153.png/ff4444/ffffff'),(40,'Private',1,379.76,'http://dummyimage.com/127x249.png/ff4444/ffffff'),(41,'Private',3,380.72,'http://dummyimage.com/238x161.png/5fa2dd/ffffff'),(42,'Private',2,311.97,'http://dummyimage.com/162x174.png/5fa2dd/ffffff'),(43,'Shared',3,417.78,'http://dummyimage.com/204x100.png/dddddd/000000'),(44,'Shared',2,409.83,'http://dummyimage.com/242x202.png/cc0000/ffffff'),(45,'Private',3,379.44,'http://dummyimage.com/234x165.png/cc0000/ffffff'),(46,'Private',2,428.25,'http://dummyimage.com/171x129.png/5fa2dd/ffffff'),(47,'Private',3,153.39,'http://dummyimage.com/215x222.png/cc0000/ffffff'),(48,'Private',2,129.40,'http://dummyimage.com/219x192.png/dddddd/000000'),(49,'Private',3,296.58,'http://dummyimage.com/170x140.png/dddddd/000000'),(50,'Shared',1,368.85,'http://dummyimage.com/161x106.png/5fa2dd/ffffff'),(52,'Shared',1,116.60,'http://dummyimages.com/162x223.png/5fa2dd/ffffff');
+INSERT INTO `room` VALUES (1,'Shared',3,116.60,'http://dummyimage.com/162x223.png/5fa2dd/ffffff'),(2,'Shared',1,182.49,'http://dummyimage.com/183x113.png/dddddd/000000'),(3,'Private',2,224.98,'http://dummyimage.com/242x110.png/5fa2dd/ffffff'),(4,'Private',2,462.08,'http://dummyimage.com/149x191.png/dddddd/000000'),(5,'Shared',3,289.50,'http://dummyimage.com/212x189.png/cc0000/ffffff'),(6,'Private',1,406.69,'http://dummyimage.com/229x151.png/dddddd/000000'),(8,'Shared',2,221.78,'http://dummyimage.com/244x222.png/5fa2dd/ffffff'),(9,'Private',2,201.21,'http://dummyimage.com/132x222.png/5fa2dd/ffffff'),(10,'Shared',1,205.72,'http://dummyimage.com/161x233.png/dddddd/000000'),(11,'Shared',3,473.43,'http://dummyimage.com/201x171.png/5fa2dd/ffffff'),(12,'Private',2,177.88,'http://dummyimage.com/178x108.png/dddddd/000000'),(13,'Private',3,347.48,'http://dummyimage.com/226x124.png/cc0000/ffffff'),(14,'Shared',1,405.06,'http://dummyimage.com/190x236.png/ff4444/ffffff'),(15,'Shared',2,255.57,'http://dummyimage.com/210x184.png/dddddd/000000'),(16,'Private',3,349.34,'http://dummyimage.com/211x229.png/ff4444/ffffff'),(17,'Private',3,497.87,'http://dummyimage.com/145x207.png/dddddd/000000'),(18,'Shared',3,182.39,'http://dummyimage.com/163x225.png/dddddd/000000'),(19,'Shared',1,202.26,'http://dummyimage.com/178x178.png/5fa2dd/ffffff'),(20,'Private',3,165.79,'http://dummyimage.com/199x238.png/ff4444/ffffff'),(21,'Private',3,238.53,'http://dummyimage.com/244x114.png/5fa2dd/ffffff'),(22,'Shared',3,176.80,'http://dummyimage.com/188x215.png/ff4444/ffffff'),(23,'Shared',1,291.15,'http://dummyimage.com/151x248.png/ff4444/ffffff'),(24,'Private',1,476.56,'http://dummyimage.com/144x223.png/cc0000/ffffff'),(25,'Private',3,425.09,'http://dummyimage.com/115x216.png/dddddd/000000'),(26,'Private',3,210.50,'http://dummyimage.com/123x173.png/5fa2dd/ffffff'),(27,'Private',1,459.43,'http://dummyimage.com/214x212.png/dddddd/000000'),(28,'Private',2,445.90,'http://dummyimage.com/241x208.png/ff4444/ffffff'),(29,'Private',2,491.61,'http://dummyimage.com/109x127.png/ff4444/ffffff'),(30,'Private',1,294.58,'http://dummyimage.com/109x183.png/cc0000/ffffff'),(31,'Shared',1,248.50,'http://dummyimage.com/152x183.png/cc0000/ffffff'),(32,'Private',1,456.60,'http://dummyimage.com/196x129.png/dddddd/000000'),(33,'Shared',3,432.45,'http://dummyimage.com/238x221.png/cc0000/ffffff'),(34,'Private',1,116.19,'http://dummyimage.com/161x238.png/ff4444/ffffff'),(35,'Private',1,121.80,'http://dummyimage.com/103x186.png/5fa2dd/ffffff'),(36,'Shared',3,153.78,'http://dummyimage.com/152x107.png/5fa2dd/ffffff'),(37,'Shared',3,351.57,'http://dummyimage.com/222x206.png/dddddd/000000'),(38,'Private',2,450.55,'http://dummyimage.com/117x226.png/dddddd/000000'),(39,'Private',1,335.85,'http://dummyimage.com/161x153.png/ff4444/ffffff'),(40,'Private',1,379.76,'http://dummyimage.com/127x249.png/ff4444/ffffff'),(41,'Private',3,380.72,'http://dummyimage.com/238x161.png/5fa2dd/ffffff'),(42,'Private',2,311.97,'http://dummyimage.com/162x174.png/5fa2dd/ffffff'),(43,'Shared',3,417.78,'http://dummyimage.com/204x100.png/dddddd/000000'),(44,'Shared',2,409.83,'http://dummyimage.com/242x202.png/cc0000/ffffff'),(45,'Private',3,379.44,'http://dummyimage.com/234x165.png/cc0000/ffffff'),(46,'Private',2,428.25,'http://dummyimage.com/171x129.png/5fa2dd/ffffff'),(47,'Private',3,153.39,'http://dummyimage.com/215x222.png/cc0000/ffffff'),(48,'Private',2,129.40,'http://dummyimage.com/219x192.png/dddddd/000000'),(49,'Private',3,296.58,'http://dummyimage.com/170x140.png/dddddd/000000'),(50,'Shared',1,368.85,'http://dummyimage.com/161x106.png/5fa2dd/ffffff'),(52,'Shared',1,116.60,'http://dummyimages.com/162x223.png/5fa2dd/ffffff');
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -373,4 +375,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-26  9:38:57
+-- Dump completed on 2023-11-11 15:18:11

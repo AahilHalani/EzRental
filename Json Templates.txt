@@ -1,0 +1,62 @@
+*** EZ RENTAL JSON TEMPALTE *****
+
+---- Advertisement Post -------
+
+{
+    "advertisement": {
+        "rent": {
+            "room": {
+                "type": "Private",
+                "numBeds": 2,
+                "sqArea": 224.98,
+                "picturePath": "http://dummyimage.com/242x110.png/5fa2dd/ffffff"
+            },
+            "renterId": 1
+        },
+        "price": 56.70,
+        "description": "Lores Ipsum something something",
+        "startDate": "2020-10-11T00:00:00",
+        "endDate": "2023-09-16T00:00:00",
+        "area": "Garden East",
+        "city": "Karachi",
+        "country": "Pakistan"
+    },
+    "facilties": [
+        {
+            "facilityId": 6,
+            "facilityName": "Palmers Lodge Hostels"
+        }
+    ]
+}
+
+---- Advertisement Put -------
+
+{ 
+    "advertisement": {
+        "rent": {
+            "room": {
+                "type": "Shared",
+                "numBeds": 4,
+                "sqArea": 300.98,
+                "picturePath": "http://dummyimage.com/242x110.png/5fa2dd/ffffff"
+            }
+        },
+        "price": 56.70,
+        "description": "Lores Ipsum something something",
+        "startDate": "2020-10-11T00:00:00",
+        "endDate": "2023-09-16T00:00:00",
+        "area": "Defece",
+        "city": "Lahore",
+        "country": "Pakistan"
+    },
+    "facilties": [
+       
+        {
+            "facilityId": 7,
+            "facilityName": "Gili Mansion"
+        }
+    ]
+}
+
+
+

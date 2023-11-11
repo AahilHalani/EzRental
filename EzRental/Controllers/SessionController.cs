@@ -27,7 +27,7 @@ namespace EzRental.Controllers
 
 
         // GET: api/<ValuesController>
-        [HttpGet]
+        [HttpPost]
         public ActionResult Login(Credentials credentials)
         {
             Console.WriteLine("login Hit");
