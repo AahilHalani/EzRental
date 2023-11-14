@@ -100,7 +100,8 @@ namespace EzRental.Controllers
                 _context.Credentials.Add(credentials);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("Login", new { user = credentials.Username });
+                return CreatedAtAction("Login", new { user = credentials.Username, 
+                    message="User successfully created" });
             }
             catch (ArgumentNullException e)
             {
