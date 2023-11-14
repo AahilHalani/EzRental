@@ -7,6 +7,7 @@ using EzRental.Services;
 using Microsoft.AspNetCore.Http;
 using MySqlX.XDevAPI;
 using System.Web;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,7 +28,7 @@ namespace EzRental.Controllers
 
 
         // GET: api/<ValuesController>
-        [HttpPost]
+        [HttpGet]
         public ActionResult Login(Credentials credentials)
         {
             Console.WriteLine("login Hit");
@@ -48,20 +49,9 @@ namespace EzRental.Controllers
                     HttpContext.Response.Cookies.Append("user", user_credentials.Username,
                         new Microsoft.AspNetCore.Http.CookieOptions
                         {
-                            Expires = DateTime.Now.AddHours(1),
-                            Secure = true
-                        }) ;
-
-                    var userId = _context.Credentials.Where(u => u.Username == credentials.Username).
-                        Select(u => u.UserId).FirstAsync().Result;
-
-                    HttpContext.Response.Cookies.Append("userId", userId.ToString(),
-                        new Microsoft.AspNetCore.Http.CookieOptions
-                        {
-                            Expires = DateTime.Now.AddHours(1),
-                            Secure = true
-                        }) ;
-
+                            Expires = DateTime.Now.AddHours(1)
+                        });
+                    
                     return Ok("login Succesful");
                 }
 
@@ -80,6 +70,7 @@ namespace EzRental.Controllers
         [HttpPost]
         public async Task<ActionResult> Signup(CredentialWrapper credentialUserData)
         {
+            Console.WriteLine("login Hit");
             try
             {
                 Credentials credentials = (credentialUserData.credentials != null) ? 
