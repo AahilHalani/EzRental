@@ -59,7 +59,7 @@ export default function LoginView() {
             Username
           </label>
           <input
-            className="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500"
+            className="bg-gray-200 shadow appearance-none border rounded w-full py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500"
             type="text"
             placeholder="Username"
             value={userName}
