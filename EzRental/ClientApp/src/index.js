@@ -8,10 +8,12 @@ import reportWebVitals from './reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux'
 import loginReducer from './components/Auth/LoginSlice';
+import advertisementReducer from './components/Home/AdvertisementSlice';
 
 const store = configureStore({
   reducer: {
-    login: loginReducer 
+    login: loginReducer,
+    advertisement: advertisementReducer 
   },
 })
 
