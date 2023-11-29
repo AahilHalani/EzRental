@@ -64,7 +64,7 @@ export default function HomePage() {
                 <div key={index} className="max-w-xs relative rounded overflow-hidden">
                   <img
                     alt="property"
-                    src="http://dummyimage.com/242x110.png/5fa2dd/ffffff"
+                          src="./images/default/default2.jpeg"
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute bottom-2 left-7 w-4/5 bg-black bg-opacity-50 text-white p-2 rounded">
@@ -96,7 +96,7 @@ export default function HomePage() {
             <Card
               hoverable
               style={{ width: 300 }}
-              cover={<img alt="property" src="http://dummyimage.com/242x110.png/5fa2dd/ffffff" />}
+              cover={<img alt="property" src="./images/default/default.jpeg" />}
             >
               <Card.Meta title={card.area} description={`${card.area}, ${card.city}`} />
               <p>From {card.price}</p>

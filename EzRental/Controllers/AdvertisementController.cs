@@ -16,7 +16,6 @@ namespace EzRental.Controllers
     public class AdvertisementController : ControllerBase
     {
         private readonly EzRentalDbContext _context;
-
         public AdvertisementController(EzRentalDbContext context)
         {
             _context = context;
@@ -203,6 +202,8 @@ namespace EzRental.Controllers
                     _context.AdFacility.Add(new AdFacility { FacilityId = facility.FacilityId, AdId=advertisement.AdId });
                 }
 
+                
+
                 await _context.SaveChangesAsync();
                 return Created("Advertisement Added", new { id = advertisement.AdId});
                 
@@ -213,6 +214,8 @@ namespace EzRental.Controllers
                 return Problem("Server ran into an unexpected error.");
             }
         }
+
+        
 
         // DELETE: api/Advertisement/5
         [HttpDelete("{id}")]
