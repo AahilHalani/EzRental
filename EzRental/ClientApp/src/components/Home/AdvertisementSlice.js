@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   cardData: [],
   cityData: [],
-  countryData: []
+  countryData: [],
+  wishlistData: []
 }
 
 const advertisementSlice = createSlice({
@@ -18,10 +19,13 @@ const advertisementSlice = createSlice({
     },
     addCountryData: (state, action) => {
       state.countryData = action.payload
+    },
+    addWishlistData: (state, action) => {
+      state.wishlistData = action.payload
     }
   }
 })
 
 
-export const { addCardData, addCityData, addCountryData } = advertisementSlice.actions;
+export const { addCardData, addCityData, addCountryData, addWishlistData } = advertisementSlice.actions;
 export default advertisementSlice.reducer;

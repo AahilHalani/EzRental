@@ -117,6 +117,7 @@ namespace EzRental.Controllers
         public ActionResult Logout()
         {
             Response.Cookies.Delete("user");
+            Response.Cookies.Delete("userId");
             return Ok("User Logged Out");
         }
 

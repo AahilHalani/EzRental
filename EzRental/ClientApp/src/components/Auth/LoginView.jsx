@@ -30,7 +30,7 @@ export default function LoginView() {
       const response = await axios.post('http://localhost:44486/session/Login', formData)
       dispatch(loginSuccess(userName))
       console.log(response.data.message)
-      navigate("/expenses")
+      navigate("/")
     }
     catch(error)
     {
@@ -82,7 +82,7 @@ export default function LoginView() {
           Forgot Password?
         </p>
         <p className="text-sm text-indigo-500 hover:text-indigo-800 mb-6">
-          <NavLink to={'/register'}>Don't have an account? Sign up.</NavLink>
+          <NavLink to={'/signup'}>Don't have an account? Sign up.</NavLink>
         </p>
         <button
           className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

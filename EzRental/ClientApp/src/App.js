@@ -4,6 +4,7 @@ import SignupView from './components/Auth/SignupView';
 import LoginView from './components/Auth/LoginView';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './components/Home/HomePage';
+import Navbar from './Navbar';
 
 
 export default class App extends Component {
@@ -12,6 +13,7 @@ export default class App extends Component {
   render() {
     return (
     <div>
+      <Navbar />
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='login' element={<LoginView />} />
