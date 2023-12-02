@@ -28,7 +28,7 @@ namespace EzRental.Controllers
 
         // GET: api/<ValuesController>
         [HttpPost]
-        public ActionResult Login(Credentials credentials)
+        public async Task<ActionResult> Login(Credentials credentials)
         {
             Console.WriteLine("login Hit");
             if (_context.Credentials == null || credentials == null)
@@ -38,7 +38,7 @@ namespace EzRental.Controllers
 
             try
             {
-                var user_credentials = _context.Credentials.SingleOrDefault(c => c.Username == credentials.Username);
+                var user_credentials = await _context.Credentials.SingleOrDefaultAsync(c => c.Username == credentials.Username);
 
                 if (user_credentials == null)
                     return NotFound("User Does not Exists");
@@ -114,11 +114,30 @@ namespace EzRental.Controllers
         }
 
         [HttpGet]
-        public ActionResult Logout()
+        public Task<ActionResult> Logout()
         {
             Response.Cookies.Delete("user");
             Response.Cookies.Delete("userId");
-            return Ok("User Logged Out");
+            return Task.FromResult<ActionResult>(Ok("User Logged Out"));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> VerifySession()
+        {
+            var user_id = HttpContext.Request.Cookies["userId"];
+            int.TryParse(user_id, out var userId);
+            bool userExist = await UserExistsAsync(userId);
+            if(user_id == null || !userExist)
+            {
+                return NotFound(new { message="Session Terminated"});
+            }
+
+            return Ok(userId);
+        }
+
+        private async Task<bool> UserExistsAsync(int id)
+        {
+            return await _context.User.AnyAsync(e => e.UserId == id);
         }
 
     }

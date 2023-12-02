@@ -50,7 +50,7 @@ export default function LoginView() {
 
   return (
     <div className="bg-white flex justify-center items-center h-screen px-10">
-      <img src="logo/ezrental_logo.png" alt="EzRental Logo"></img>
+      <img src="images/logo/ezrental_logo.png" alt="EzRental Logo"></img>
       <form 
         onSubmit={handleLogin}
         className="bg-white shadow-md rounded px-10 pt-6 pb-8 mb-4 w-1/3 h-96">
@@ -86,7 +86,7 @@ export default function LoginView() {
           <NavLink to={'/signup'}>Don't have an account? Sign up.</NavLink>
         </p>
         <button
-          className="bg-customGreen hover:bg-customGreen-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-customGreen hover:bg-customGreen-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
           Submit
