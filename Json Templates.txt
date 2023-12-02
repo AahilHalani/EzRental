@@ -1,6 +1,6 @@
 *** EZ RENTAL JSON TEMPALTE *****
 
----- Advertisement Post -------
+*****---- Advertisement Post -------*****
 
 {
     "advertisement": {
@@ -29,7 +29,7 @@
     ]
 }
 
----- Advertisement Put -------
+*****---- Advertisement Put -------*****
 
 { 
     "advertisement": {
@@ -59,4 +59,18 @@
 }
 
 
+
+****---- To get all ads posted by user --------****
+
+http://localhost:44486/advertisement/User/1
+
+
+==========================================================================================================
+
+******----Post and Delete WishList ------*****
+
+{
+    "userId":54,
+    "advertisementId":4
+}
 

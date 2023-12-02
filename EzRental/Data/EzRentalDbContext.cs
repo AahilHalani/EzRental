@@ -22,6 +22,7 @@ namespace EzRental.Data
         public DbSet<Room> Room { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Wishlist> Wishlist { get; set; }
 
     }
 }

@@ -76,6 +76,45 @@ namespace EzRental.Controllers
             }
         }
 
+        [HttpGet("User/{userId}")]
+        public async Task<ActionResult> GetUserAds(int userId)
+        {
+            try
+            {
+                var advertisements = await _context.Advertisement
+                .Where(ad => ad.Rent.RenterId == userId).ToListAsync();
+
+                List<AdvertisementWrapper> userAds = new List<AdvertisementWrapper>();
+
+                foreach (var _advertisement in advertisements)
+                {
+
+                    if (_advertisement == null) continue;
+
+                    AdvertisementWrapper advertisementWrapper = new AdvertisementWrapper();
+                    advertisementWrapper.advertisement = _advertisement;
+                    advertisementWrapper.facilties = new List<Facilties>();
+
+                    var facilities = _context.AdFacility.Include(af => af.Facility).Where(af => af.AdId == _advertisement.AdId).ToList();
+
+                    if (facilities != null)
+                        foreach (var facility in facilities)
+                        {
+                            if (facility.Facility != null)
+                                advertisementWrapper.facilties.Add(facility.Facility);
+                        }
+
+                    userAds.Add(advertisementWrapper);
+                }
+                return Ok(userAds);
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.ToString());
+                return Problem("Server ran into error");
+            }
+        }
+
         // PUT: api/Advertisement/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAdvertisement(int id, AdvertisementWrapper advertisementWrapper)
@@ -214,8 +253,6 @@ namespace EzRental.Controllers
                 return Problem("Server ran into an unexpected error.");
             }
         }
-
-        
 
         // DELETE: api/Advertisement/5
         [HttpDelete("{id}")]
