@@ -2,7 +2,12 @@
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}",],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customGreen: '#00BF63',
+        customlightgreen: '#38EB94',
+      },
+    },
   },
   plugins: [],
 }

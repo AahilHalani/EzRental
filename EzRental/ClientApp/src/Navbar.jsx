@@ -50,15 +50,17 @@ export default function Navbar() {
 
 
   return (
-    <div className="bg-indigo-700 p-4 w-full flex justify-between items-center">
+    <div className="bg-customGreen p-4 w-full flex justify-between items-center">
       <ul className="flex justify-center items-center">
+        {/* <img src="logo/ezrental_logo.png" alt="Your Image" className="h-20 w-20" /> */}
         <li className="mr-4">
+
           {/* <NavLink
             to={"/profile"}
             className={
               location.pathname === "/profile"
                 ? "text-yellow-400"
-                : "text-white hover:text-gray-300"
+                : "text-black hover:text-gray-300"
             }
           >
             Profile
@@ -68,7 +70,7 @@ export default function Navbar() {
               items
             }}
           >
-              <Space className="text-white hover:text-gray-300">
+              <Space className="text-black hover:text-gray-300">
                 Profile
                 <DownOutlined />
               </Space>
@@ -80,7 +82,7 @@ export default function Navbar() {
             className={
               location.pathname === "/expenses"
                 ? "text-yellow-400"
-                : "text-white hover:text-gray-300"
+                : "text-black hover:text-gray-300"
             }
           >
             Home
@@ -92,7 +94,7 @@ export default function Navbar() {
             className={
               location.pathname === "/expenses"
                 ? "text-yellow-400"
-                : "text-white hover:text-gray-300"
+                : "text-black hover:text-gray-300"
             }
           >
             Wishlist
@@ -102,10 +104,10 @@ export default function Navbar() {
       <ul className="flex justify-end items-center">
         {isLoggedIn ? (
           <>
-            <li className="mr-4 text-white">{user}</li>
+            <li className="mr-4 text-black">{user}</li>
             <li>
               <button
-                className="text-white hover:text-gray-300 border border-white px-3 py-1 rounded"
+                className="text-black hover:text-gray-300 border border-black px-3 py-1 rounded"
                 onClick={handleSignOut}>
                   Sign Out
                 </button>
@@ -119,7 +121,7 @@ export default function Navbar() {
                 className={
                   location.pathname === "/login"
                     ? "text-yellow-400"
-                    : "text-white hover:text-gray-300"
+                    : "text-black hover:text-gray-300"
                 }
               >
                 Login
@@ -131,7 +133,7 @@ export default function Navbar() {
                 className={
                   location.pathname === "/signup"
                     ? "text-yellow-400"
-                    : "text-white hover:text-gray-300"
+                    : "text-black hover:text-gray-300"
                 }
               >
                 Sign up

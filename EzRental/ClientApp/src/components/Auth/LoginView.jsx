@@ -49,7 +49,8 @@ export default function LoginView() {
 
 
   return (
-    <div className="bg-indigo-900 flex justify-center items-center h-screen px-10">
+    <div className="bg-white flex justify-center items-center h-screen px-10">
+      <img src="logo/ezrental_logo.png" alt="EzRental Logo"></img>
       <form 
         onSubmit={handleLogin}
         className="bg-white shadow-md rounded px-10 pt-6 pb-8 mb-4 w-1/3 h-96">
@@ -78,14 +79,14 @@ export default function LoginView() {
             onChange={e => setPassword(e.target.value)}
           />
         </div>
-        <p className="text-sm text-indigo-500 hover:text-indigo-800 mb-6">
+        <p className="text-sm text-customGreen-500 hover:text-customGreen-800 mb-6">
           Forgot Password?
         </p>
-        <p className="text-sm text-indigo-500 hover:text-indigo-800 mb-6">
+        <p className="text-sm text-customGreen-500 hover:text-customGreen-800 mb-6">
           <NavLink to={'/signup'}>Don't have an account? Sign up.</NavLink>
         </p>
         <button
-          className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-customGreen hover:bg-customGreen-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
           Submit
