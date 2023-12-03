@@ -12,7 +12,7 @@ const items = [
   {
     label: (
       <NavLink
-        to={"/account"}
+        to={"/profile"}
         className="text-black hover:text-gray-300"
       >
         Account Settings
@@ -54,17 +54,6 @@ export default function Navbar() {
       <ul className="flex justify-center items-center">
         {/* <img src="logo/ezrental_logo.png" alt="Your Image" className="h-20 w-20" /> */}
         <li className="mr-4">
-
-          {/* <NavLink
-            to={"/profile"}
-            className={
-              location.pathname === "/profile"
-                ? "text-yellow-400"
-                : "text-black hover:text-gray-300"
-            }
-          >
-            Profile
-          </NavLink> */}
           <Dropdown
             menu={{
               items

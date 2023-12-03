@@ -125,14 +125,19 @@ namespace EzRental.Controllers
         public async Task<ActionResult> VerifySession()
         {
             var user_id = HttpContext.Request.Cookies["userId"];
-            int.TryParse(user_id, out var userId);
-            bool userExist = await UserExistsAsync(userId);
-            if(user_id == null || !userExist)
+            if(user_id == null)
             {
                 return NotFound(new { message="Session Terminated"});
             }
+            int.TryParse(user_id, out var userId);
+            bool userExist = await UserExistsAsync(userId);
+            if(!userExist)
+            {
+                return NotFound(new { message="Session Terminated"});
+            }
+            var userName = await _context.Credentials.Where(c => c.UserId == userId).Select(c=>c.Username).FirstOrDefaultAsync();
 
-            return Ok(userId);
+            return Ok(new {id = user_id, name = userName});
         }
 
         private async Task<bool> UserExistsAsync(int id)

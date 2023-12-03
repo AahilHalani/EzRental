@@ -1,10 +1,54 @@
 import { Modal, Button } from 'antd';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { addWishlistData } from './AdvertisementSlice';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default function DetailedCard({ card, onClose, visible }) {
+  const [likedCards, setLikedCards] = useState([]);
+  const dispatch = useDispatch()
+  const userId = Cookies.get('userId')
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toISOString().split('T')[0];
   };
+
+  const getWishList = async () => {
+    const response = await axios.get(`http://localhost:44486/wishlist/${userId}`);
+    setLikedCards(response.data)
+  }
+
+  useEffect(() => {
+    getWishList()
+  },[])
+
+  const toggleFavorite = async (cardIndex) => {
+    const data = {
+      "userId": userId,
+      "advertisementId": card.advertisement.adId
+  }
+  const isAdIdIncluded = likedCards.some(card => card.advertisement.adId === cardIndex);
+    if (isAdIdIncluded) {
+      const response = await axios.delete(`http://localhost:44486/wishlist`, {
+        headers: {
+          'Content-Type': 'application/json', // Adjust content type if necessary
+        },
+        data: data, // Check if 'data' needs stringifying (if not already a string)
+      });
+      getWishList()
+    } else {
+      const response = await axios.post(`http://localhost:44486/wishlist`,data);
+      getWishList()
+    }
+  };
+
+  const handleInquire = async () => {
+    console.log(card)
+    const response = await axios.post(`http://localhost:44486/advertisement/Inquire/${card.advertisement.adId}/${card.advertisement.rent.renterId}`)
+    console.log(response)
+  }
     
 
   return (
@@ -40,15 +84,16 @@ export default function DetailedCard({ card, onClose, visible }) {
             <p className="w-1/2 mb-2"><span className='font-bold'>End Date:</span> {formatDate(card.advertisement.endDate)}</p>
           </div>
           <h3 className='text-2x1 font-bold mb-2'>Renters Information</h3>
-          <div className='flex flex-wrap'>
+          <div className='flex flex-wrap mb-10'>
             <p className="w-full mb-2"><span className='font-bold'>Name: </span>{card.advertisement.rent.renter.firstName} {card.advertisement.rent.renter.lastName}</p>
             <p className="w-1/2 mb-2"><span className='font-bold'>Email: </span> {card.advertisement.rent.renter.email}</p>
             <p className="w-1/2 mb-2"><span className='font-bold'>Phone Number: </span> {card.advertisement.rent.renter.phoneNumber}</p>
           </div>
           <div className="mt-auto flex justify-end">
-            <div className='flex'>
+            <div className='flex mt-20'>
               <p className="mb-2 mt-2 mr-2"><span className='font-bold'>Price: </span> {card.advertisement.price}</p>
-              <Button type="primary" className='bg-blue-500 hover:bg-blue-700 text-white font-bold rounded'>Book</Button>
+              <Button type="primary" className='bg-blue-500 hover:bg-blue-700 text-white font-bold rounded' onClick={() => toggleFavorite(card.advertisement.adId)}>{likedCards.some(cards => cards.advertisement.adId === card.advertisement.adId) ? "Remove from wishlist" : "Add to wishlist"}</Button>
+              <Button type="primary" className='bg-blue-500 hover:bg-blue-700 text-white font-bold rounded ml-4' onClick={handleInquire}>Inquire</Button>
             </div>
           </div>
         </div>

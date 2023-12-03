@@ -1,6 +1,6 @@
 ﻿Dear @reciver,
 
-@user want to enquire about your rental on @area, @city, @country.
+@user want to inquire about your rental on @area, @city, @country.
 
 You can contanct the rentee using:
 
@@ -8,5 +8,5 @@ You can contanct the rentee using:
 @email
 
 
-Sincerly,
+Sincerely,
 EZRENTAL-Team

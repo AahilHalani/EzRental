@@ -5,6 +5,8 @@ import LoginView from './components/Auth/LoginView';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './components/Home/HomePage';
 import Navbar from './Navbar';
+import WishlistView from './components/Wishlist/Wishlist';
+import ProfilePage from './components/Profile/ProfileView';
 
 
 export default class App extends Component {
@@ -19,6 +21,8 @@ export default class App extends Component {
         <Route path='login' element={<LoginView />} />
         <Route path='signup' element={<SignupView />} />
         <Route path='home' element={<HomePage />} />
+        <Route path='wishlist' element={<WishlistView />} />
+        <Route path='profile' element={<ProfilePage />}></Route>
       </Routes>
     </div>
     );
