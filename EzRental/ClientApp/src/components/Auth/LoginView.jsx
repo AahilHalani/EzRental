@@ -86,7 +86,7 @@ export default function LoginView() {
           <NavLink to={'/signup'}>Don't have an account? Sign up.</NavLink>
         </p>
         <button
-          className="bg-customGreen hover:bg-customGreen-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-customGreen hover:bg-green-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
           Submit

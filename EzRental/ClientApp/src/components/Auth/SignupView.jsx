@@ -60,7 +60,8 @@ export default function SignupView()
 
   
   return (
-    <div className="bg-indigo-900 flex justify-center items-center h-screen px-10">
+    <div className="bg-white flex justify-center items-center h-screen px-10">
+      <img src="images/logo/ezrental_logo.png" alt="EzRental Logo"></img>
       <form
         className="bg-white shadow-md rounded px-10 pt-6 pb-8 mb-4 w-1/2 h-auto"
         onSubmit={handleRegistration}
@@ -170,7 +171,7 @@ export default function SignupView()
         </div>
         <button
           type="submit"
-          className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="bg-customGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Submit
         </button>

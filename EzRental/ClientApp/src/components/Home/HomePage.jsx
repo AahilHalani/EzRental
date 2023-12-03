@@ -90,7 +90,7 @@ export default function HomePage() {
       <h1 className="text-3xl font-bold mb-4">Popular Cities Across The Globe</h1>
       <div className="flex flex-wrap gap-4">
         {countryData.map((country, index) => (
-          <button key={index} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <button key={index} className="bg-customGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             {country}
           </button>
         ))}
@@ -106,7 +106,7 @@ export default function HomePage() {
                 <div key={index} className="max-w-xs relative rounded overflow-hidden">
                   <img
                     alt="property"
-                          src="./images/default/default2.jpeg"
+                          src="./images/default/karachi.jpg"
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute bottom-2 left-7 w-4/5 bg-black bg-opacity-50 text-white p-2 rounded">
@@ -125,7 +125,7 @@ export default function HomePage() {
           <button
             key={index}
             onClick={() => setSelectedCity(city)}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-customGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
             {city}
           </button>

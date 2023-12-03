@@ -92,8 +92,8 @@ export default function DetailedCard({ card, onClose, visible }) {
           <div className="mt-auto flex justify-end">
             <div className='flex mt-20'>
               <p className="mb-2 mt-2 mr-2"><span className='font-bold'>Price: </span> {card.advertisement.price}</p>
-              <Button type="primary" className='bg-blue-500 hover:bg-blue-700 text-white font-bold rounded' onClick={() => toggleFavorite(card.advertisement.adId)}>{likedCards.some(cards => cards.advertisement.adId === card.advertisement.adId) ? "Remove from wishlist" : "Add to wishlist"}</Button>
-              <Button type="primary" className='bg-blue-500 hover:bg-blue-700 text-white font-bold rounded ml-4' onClick={handleInquire}>Inquire</Button>
+              <Button type="primary" className='bg-customGreen hover:bg-green-700 text-white font-bold rounded' onClick={() => toggleFavorite(card.advertisement.adId)}>{likedCards.some(cards => cards.advertisement.adId === card.advertisement.adId) ? "Remove from wishlist" : "Add to wishlist"}</Button>
+              <Button type="primary" className='bg-customGreen hover:bg-green-700 text-white font-bold rounded ml-4' onClick={handleInquire}>Inquire</Button>
             </div>
           </div>
         </div>
