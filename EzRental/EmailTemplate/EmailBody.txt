@@ -1,0 +1,12 @@
+﻿Dear @reciver,
+
+@user want to enquire about your rental on @area, @city, @country.
+
+You can contanct the rentee using:
+
+@phone
+@email
+
+
+Sincerly,
+EZRENTAL-Team

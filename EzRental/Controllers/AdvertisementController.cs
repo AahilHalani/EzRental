@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EzRental.Data;
 using EzRental.Models;
+using EzRental.Services;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using DB_API_20K0290.Services;
+using System.Text;
 
 namespace EzRental.Controllers
 {
@@ -16,24 +19,30 @@ namespace EzRental.Controllers
     public class AdvertisementController : ControllerBase
     {
         private readonly EzRentalDbContext _context;
-        public AdvertisementController(EzRentalDbContext context)
+        private EmailService _emailService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _configuration;
+        public AdvertisementController(EzRentalDbContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+            _emailService = new EmailService(_configuration);
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: api/Advertisement
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Advertisement>>> GetAllAdvertisement()
         {
-            if(_context.Advertisement == null)
+            if (_context.Advertisement == null)
             {
                 return Problem("Server ran into an unexpected error");
             }
 
             var advertisements = await _context.Advertisement.ToListAsync();
-                //Include(ad => ad.Area.city).Include(ad => ad.Area.city.Country).ToListAsync();
+            //Include(ad => ad.Area.city).Include(ad => ad.Area.city.Country).ToListAsync();
 
-            if (advertisements.Count > 0) { return Ok(advertisements); } else return NotFound(); 
+            if (advertisements.Count > 0) { return Ok(advertisements); } else return NotFound();
         }
 
         // GET: api/Advertisement/5
@@ -148,7 +157,7 @@ namespace EzRental.Controllers
                 advertisement.Rent.Room.RoomId = room_id;
                 advertisement.RentId = rent_id;
 
-                
+
                 _context.Entry(advertisement.Rent.Room).State = EntityState.Modified;
                 _context.Entry(advertisement).State = EntityState.Modified;
 
@@ -173,9 +182,9 @@ namespace EzRental.Controllers
 
 
                 var facility_ids = facilities.Select(obj => obj.FacilityId).ToList();
-                
+
                 // add new facilities is the previous state of object does not already contains it
-                foreach(var facility in facility_ids) 
+                foreach (var facility in facility_ids)
                 {
                     if (!existing_facilities.Result.Contains(facility))
                     {
@@ -195,7 +204,7 @@ namespace EzRental.Controllers
                     {
                         Console.WriteLine($"Remove Facility {facility}");
                         AdFacility adfacility = await _context.AdFacility.FirstOrDefaultAsync(af => af.FacilityId == facility && af.AdId == id);
-                        
+
                         if (adfacility == null)
                             continue;
 
@@ -208,7 +217,7 @@ namespace EzRental.Controllers
 
                 return Ok();
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
                 return Problem("Server ran into an error");
@@ -235,17 +244,17 @@ namespace EzRental.Controllers
                 advertisement.Rent.Renter = null;
                 _context.Advertisement.Add(advertisement);
                 await _context.SaveChangesAsync();
-              
-                foreach(var facility in facilities)
+
+                foreach (var facility in facilities)
                 {
-                    _context.AdFacility.Add(new AdFacility { FacilityId = facility.FacilityId, AdId=advertisement.AdId });
+                    _context.AdFacility.Add(new AdFacility { FacilityId = facility.FacilityId, AdId = advertisement.AdId });
                 }
 
-                
+
 
                 await _context.SaveChangesAsync();
-                return Created("Advertisement Added", new { id = advertisement.AdId});
-                
+                return Created("Advertisement Added", new { id = advertisement.AdId });
+
             }
             catch (Exception e)
             {
@@ -265,7 +274,7 @@ namespace EzRental.Controllers
 
             // get advertisement data
             var advertisement = await _context.Advertisement.Include(a => a.Rent).Include(a => a.Rent.Room).FirstAsync(a => a.AdId == id);
-            
+
             if (advertisement == null)
             {
                 return NotFound();
@@ -273,11 +282,11 @@ namespace EzRental.Controllers
 
             //Get all facilites linked to add
             var facilities = await _context.AdFacility.Where(ad => ad.AdId == id).ToListAsync();
-            
+
             //Remove all ad facilities
-            foreach(var facility in facilities) 
-            {   
-                if(facility != null)
+            foreach (var facility in facilities)
+            {
+                if (facility != null)
                     _context.AdFacility.Remove(facility);
             }
 
@@ -288,6 +297,43 @@ namespace EzRental.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpPost("Inquire/{adId}/{renteeId}")]
+        public async Task<ActionResult> Enquire(int adId, int renteeId)
+        {
+            try
+            {
+                var advertisement = await _context.Advertisement.Include(a => a.Rent).Include(a => a.Rent.Renter).FirstOrDefaultAsync(a => a.AdId == adId);
+                var rentee = await _context.User.FirstOrDefaultAsync(u => u.UserId == renteeId);
+
+
+                Email email = new Email();
+                email.From = String.Empty;
+                email.To = advertisement.Rent.Renter.Email;
+                email.Subject = "Rental Enquiry";
+
+                var tempalePath = Path.Combine(_webHostEnvironment.ContentRootPath, @"EmailTemplate/EmailBody.txt");
+                var reader = new StreamReader(tempalePath);
+                StringBuilder sb = new StringBuilder(reader.ReadToEnd());
+                sb.Replace("@reciver", advertisement.Rent.Renter.FirstName);
+                sb.Replace("@user", rentee.FirstName);
+                sb.Replace("@area", advertisement.Area);
+                sb.Replace("@city", advertisement.City);
+                sb.Replace("@country", advertisement.Country);
+                sb.Replace("@email", rentee.Email);
+                sb.Replace("@phone", rentee.PhoneNumber);
+
+                email.Body = sb.ToString();
+
+                if (_emailService.SendEmail(email))
+                    return Ok(new { message = "Renter has been notified" });
+                else return Problem("Server ran into an error");
+            }
+            catch(Exception ex)
+            {
+                return Problem("Server ran into an error");
+            }
         }
 
         private bool AdvertisementExists(int id)

@@ -1,9 +1,14 @@
+global using DB_API_20K0290.Models;
+
 using EzRental.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using EzRental.Interfaces;
 using EzRental.Services;
+using DB_API_20K0290.Services;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 builder.Services.AddTransient<IFileService, ImageManager>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddDbContext<EzRentalDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DevConnection")));
 

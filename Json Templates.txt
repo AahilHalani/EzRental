@@ -74,3 +74,9 @@ http://localhost:44486/advertisement/User/1
     "advertisementId":4
 }
 
+
+============================================================================================================
+****---Post Inquiry of Ad----******
+
+http://localhost:44486/advertisement/Inquire/4/53
+
