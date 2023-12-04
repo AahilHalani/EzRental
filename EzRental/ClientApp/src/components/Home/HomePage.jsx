@@ -13,12 +13,14 @@ import { loginSuccess } from '../Auth/LoginSlice';
 export default function HomePage() {
   const [selectedCity, setSelectedCity] = useState('default_city');
   const [filteredCards, setFilteredCards] = useState([]);
+  const [filteredCities, setFilteredCities] = useState([]);
   const { cardData, countryData, cityData } = useSelector(state => ({
     cardData: state.advertisement.cardData,
     countryData: state.advertisement.countryData,
     cityData: state.advertisement.cityData,
   }));
   const user = useSelector(state => state.login.user)
+  const [selectedCountry, setSelectedCountry] = useState('default_country')
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
@@ -68,16 +70,26 @@ export default function HomePage() {
 
   useEffect(() => {
     if (selectedCity) {
-      const filtered = cardData.filter(card => card.city === selectedCity);
+      const filtered = cardData.filter(card => card.city === selectedCity );
+      console.log(filtered)
       setFilteredCards(filtered);
     } else {
       setFilteredCards(cardData);
     }
   }, [selectedCity, cardData]);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const filtered = cardData.filter(card => card.country === selectedCountry);
+      setFilteredCities(filtered);
+    } else {
+      setFilteredCities(cityData);
+    }
+  }, [selectedCountry, cityData]);
+
   const CardClickHandler = async (adId) => {
     try {
       const response = await axios.get(`http://localhost:44486/advertisement/${adId}`);
-      console.log(response.data)
       setSelectedCard(response.data);
     } catch (error) {
       console.error('Error fetching card data:', error);
@@ -90,14 +102,14 @@ export default function HomePage() {
       <h1 className="text-3xl font-bold mb-4">Popular Cities Across The Globe</h1>
       <div className="flex flex-wrap gap-4">
         {countryData.map((country, index) => (
-          <button key={index} className="bg-customGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          <button key={index} onClick={() => setSelectedCountry(country)} className="bg-customGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             {country}
           </button>
         ))}
       </div>
 
-      <div className="flex flex-wrap gap-16 mt-8">
-        {cityData.map((card, index) => (
+      <div className="flex gap-16 mt-8 overflow-x-auto">
+        {filteredCities.map((card, index) => (
           <div key={index} className="max-w-xs">
             <Card
               bodyStyle={{padding: "0"}}
@@ -110,7 +122,7 @@ export default function HomePage() {
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute bottom-2 left-7 w-4/5 bg-black bg-opacity-50 text-white p-2 rounded">
-                    <p className='text-center'>{card}</p>
+                    <p className='text-center'>{card.city}</p>
                   </div>
                 </div>
               }

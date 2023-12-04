@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 export default function SignupView()
 {
@@ -169,6 +170,9 @@ export default function SignupView()
             className="bg-gray-200 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500"
           />
         </div>
+        <p className="text-sm text-customGreen-500 hover:text-customGreen-800 mb-6">
+          <NavLink to={'/login'}>Have an account? Login.</NavLink>
+        </p>
         <button
           type="submit"
           className="bg-customGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

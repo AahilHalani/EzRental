@@ -23,7 +23,7 @@ const items = [
   {
     label: (
       <NavLink
-        to={"/add-lodging"}
+        to={"/addlodging"}
         className="text-black hover:text-gray-300"
       >
         Add Lodging
