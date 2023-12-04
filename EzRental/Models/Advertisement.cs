@@ -40,7 +40,6 @@ namespace EzRental.Models
         [Required]
         [Column("Country", TypeName = "varchar(50)")]
         public string? Country { get; set; }
-        [NotMapped]
-        public IFormCollection Images { get; set; }
+        
     }
 }

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const AddLodgingView = () => {
-  const [lodgingInfo, setLodgingInfo] = useState({
+
+    const navigate = useNavigate()
+
+    const [lodgingInfo, setLodgingInfo] = useState({
     type: '',
     numberOfBeds: 0,
     squareArea: '',
@@ -26,34 +30,39 @@ const AddLodgingView = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {
-        "advertisement": {
-            "rent": {
-                "room": {
-                    "type": lodgingInfo.type,
-                    "numBeds": lodgingInfo.numberOfBeds,
-                    "sqArea": lodgingInfo.squareArea,
-                    "picturePath": "http://dummyimage.com/242x110.png/5fa2dd/ffffff"
-                },
-                "renterId": lodgingInfo.renterId
-            },
-            "price": lodgingInfo.price,
-            "description": lodgingInfo.description,
-            "startDate": lodgingInfo.startDate,
-            "endDate": lodgingInfo.endDate,
-            "area": lodgingInfo.area,
-            "city": lodgingInfo.city,
-            "country": lodgingInfo.country
-        },
-        "facilties": [
-            {
-                "facilityId": lodgingInfo.facilityID,
-                "facilityName": lodgingInfo.facilityName
-            }
-        ]
-     }
+      const formData = {
+          
+              "advertisement": {
+                  "rent": {
+                      "room": {
+                          "type": lodgingInfo.type,
+                          "numBeds": lodgingInfo.numberOfBeds,
+                          "sqArea": lodgingInfo.squareArea,
+                          "picturePath": "http://dummyimage.com/242x110.png/5fa2dd/ffffff"
+                      },
+                      "renterId": lodgingInfo.renterId
+                  },
+                  "price": lodgingInfo.price,
+                  "description": lodgingInfo.description,
+                  "startDate": lodgingInfo.startDate,
+                  "endDate": lodgingInfo.endDate,
+                  "area": lodgingInfo.area,
+                  "city": lodgingInfo.city,
+                  "country": lodgingInfo.country
+              },
+              "facilties": [
+                  {
+                      "facilityId": lodgingInfo.facilityID,
+                      "facilityName": lodgingInfo.facilityName
+                  }
+              ]
+          
+      }
+
      const response = await axios.post(`http://localhost:44486/advertisement`, formData)
      console.log(response)
+     alert(response.data.message)
+     navigate("/")
   };
 
   return (

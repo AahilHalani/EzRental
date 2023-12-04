@@ -2,7 +2,7 @@
 
 @user want to inquire about your rental on @area, @city, @country.
 
-You can contanct the rentee using:
+You can contact the rentee using:
 
 @phone
 @email

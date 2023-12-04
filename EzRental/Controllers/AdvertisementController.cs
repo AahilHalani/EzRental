@@ -245,15 +245,20 @@ namespace EzRental.Controllers
                 _context.Advertisement.Add(advertisement);
                 await _context.SaveChangesAsync();
 
-                foreach (var facility in facilities)
+                facilities = null;
+
+                if (facilities != null)
                 {
-                    _context.AdFacility.Add(new AdFacility { FacilityId = facility.FacilityId, AdId = advertisement.AdId });
+
+                    foreach (var facility in facilities)
+                    {
+                        _context.AdFacility.Add(new AdFacility { FacilityId = facility.FacilityId, AdId = advertisement.AdId });
+                    }
+
                 }
 
-
-
                 await _context.SaveChangesAsync();
-                return Created("Advertisement Added", new { id = advertisement.AdId });
+                return Created("Advertisement Added", new { message = "Advertisement Posted", id = advertisement.AdId });
 
             }
             catch (Exception e)

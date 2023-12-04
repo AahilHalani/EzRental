@@ -46,8 +46,8 @@ export default function DetailedCard({ card, onClose, visible }) {
 
   const handleInquire = async () => {
     console.log(card)
-    const response = await axios.post(`http://localhost:44486/advertisement/Inquire/${card.advertisement.adId}/${card.advertisement.rent.renterId}`)
-    console.log(response)
+      const response = await axios.post(`http://localhost:44486/advertisement/Inquire/${card.advertisement.adId}/${card.advertisement.rent.renterId}`)
+      alert(response.data.message)
   }
     
 
