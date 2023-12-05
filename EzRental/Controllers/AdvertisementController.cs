@@ -228,6 +228,7 @@ namespace EzRental.Controllers
         [HttpPost]
         public async Task<ActionResult<Advertisement>> PostAdvertisement(AdvertisementWrapper advertisementWrapper)
         {
+
             if (_context.Advertisement == null)
             {
                 return Problem("Server ran into an unexpected error.");

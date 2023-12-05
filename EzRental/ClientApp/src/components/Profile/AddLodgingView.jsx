@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie"
 
 const AddLodgingView = () => {
 
     const navigate = useNavigate()
+    const renterId = Cookies.get("userId")
 
     const [lodgingInfo, setLodgingInfo] = useState({
     type: '',
@@ -18,8 +20,6 @@ const AddLodgingView = () => {
     area: '',
     city: '',
     country: '',
-    facilityID: 0,
-    facilityName: ''
   });
 
   const handleInputChange = (e) => {
@@ -31,7 +31,6 @@ const AddLodgingView = () => {
     e.preventDefault();
 
       const formData = {
-          
               "advertisement": {
                   "rent": {
                       "room": {
@@ -40,7 +39,7 @@ const AddLodgingView = () => {
                           "sqArea": lodgingInfo.squareArea,
                           "picturePath": "http://dummyimage.com/242x110.png/5fa2dd/ffffff"
                       },
-                      "renterId": lodgingInfo.renterId
+                      "renterId": renterId
                   },
                   "price": lodgingInfo.price,
                   "description": lodgingInfo.description,
@@ -50,17 +49,13 @@ const AddLodgingView = () => {
                   "city": lodgingInfo.city,
                   "country": lodgingInfo.country
               },
-              "facilties": [
-                  {
-                      "facilityId": lodgingInfo.facilityID,
-                      "facilityName": lodgingInfo.facilityName
-                  }
-              ]
-          
+              "facilties": [{
+                "facilityId":1,
+                "facilityName":"Temp"
+              }]       
       }
 
-     const response = await axios.post(`http://localhost:44486/advertisement`, formData)
-     console.log(response)
+     const response = await axios.post(`http://localhost:44486/advertisement`,formData)
      alert(response.data.message)
      navigate("/")
   };
@@ -82,10 +77,6 @@ const AddLodgingView = () => {
           <label className="flex flex-col">
             Square Area:
             <input type="text" name="squareArea" value={lodgingInfo.squareArea} onChange={handleInputChange} className="border border-gray-300 p-2 rounded-md" />
-          </label>
-          <label className="flex flex-col">
-            Renter ID:
-            <input type="text" name="renterId" value={lodgingInfo.renterId} onChange={handleInputChange} className="border border-gray-300 p-2 rounded-md" />
           </label>
         </div>
         <div className="flex-1 space-y-2">
@@ -118,18 +109,6 @@ const AddLodgingView = () => {
             Country:
             <input type="text" name="country" value={lodgingInfo.country} onChange={handleInputChange} className="border border-gray-300 p-2 rounded-md" />
           </label>
-        </div>
-        <div className="flex-1 space-y-2">
-          <h3 className="text-lg font-semibold">Facility Details</h3>
-          <label className="flex flex-col">
-            Facility ID:
-            <input type="number" name="facilityID" value={lodgingInfo.facilityID} onChange={handleInputChange} className="border border-gray-300 p-2 rounded-md" />
-          </label>
-          <label className="flex flex-col">
-            Facility Name:
-            <textarea name="facilityName" value={lodgingInfo.facilityName} onChange={handleInputChange} className="border border-gray-300 p-2 rounded-md"></textarea>
-          </label>
-
         </div>
         <div className="flex flex-col justify-end">
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 self-start">Submit</button>
